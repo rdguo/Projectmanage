@@ -84,13 +84,13 @@
                 </div>
                 <!--任务列表_未完成-->
                     <el-table :data="unFinishTask" style="width: 100%">
-                        <el-table-column label="任务等级" width="300">
+                        <el-table-column label="任务等级" width="200">
                         <template slot-scope="scope">
                             <i class="el-icon-s-flag"></i>
                             <span style="margin-left: 10px">{{ scope.row.mark }}</span>
                         </template>
                         </el-table-column>
-                        <el-table-column label="任务名称" width="800">
+                        <el-table-column label="任务名称" width="200">
                         <template slot-scope="scope">
                             <el-popover trigger="hover" placement="top">
                             <p>名称: {{ scope.row.name }}</p>
@@ -100,6 +100,17 @@
                             </div>
                             </el-popover>
                         </template>
+                        </el-table-column>
+                        <el-table-column label="步骤" width="600"> 
+                          <template>
+                            <el-steps :space="100" :active="1" finish-status="success">
+                              <el-step title="步骤 1" description="刚刚开始"></el-step>
+                              <el-step title="步骤 2" description="部分完成"></el-step>
+                              <el-step title="步骤 3" description="半数完成"></el-step>                                                        
+                              <el-step title="步骤 4" description="多半完成"></el-step>
+                              <el-step title="步骤 5" description="即将完成"></el-step>                                                         
+                            </el-steps> 
+                          </template>
                         </el-table-column>
                         <el-table-column label="操作">
                         <template slot-scope="scope">
@@ -226,7 +237,15 @@ export default {
          
           name: '职业规划',
           detail: '考研还是就业？',
-          mark:'普通任务'
+          mark:'普通任务',
+          step:[{
+            active:'1',
+            title:[{
+              1:'已完成',
+              2:'进行中',
+              3:'节点3'
+            }]
+          }]
           
         }],
         finishTask: [{
