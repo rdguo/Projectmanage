@@ -28,12 +28,15 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
+
 export default {
     data: function() {
         return {
             param: {
-                username: 'admin',
-                password: '123123',
+                username: '',
+                password: '',
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -41,20 +44,35 @@ export default {
             },
         };
     },
+    computed:{
+      ...mapGetters([
+        'systemName'
+      ])
+    },
     methods: {
-        submitForm() {
-            this.$refs.login.validate(valid => {
-                if (valid) {
-                    this.$message.success('登录成功');
-                    localStorage.setItem('ms_username', this.param.username);
-                    this.$router.push('/');
-                } else {
-                    this.$message.error('请输入账号和密码');
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        },
+      ...mapActions([
+        'login',
+        'getUserInfo'
+      ]),
+      submitForm() {
+        var username = this.username
+        var password = this.username
+        var param = {
+          username: username,
+          password: password
+        }
+          this.$refs.login.validate(valid => {
+              if (valid) {
+                  this.$message.success('登录成功');
+                  localStorage.setItem('ms_username', this.param.username);
+                  this.$router.push('/');
+              } else {
+                  this.$message.error('请输入账号和密码');
+                  console.log('error submit!!');
+                  return false;
+              }
+          });
+      },
     },
 };
 </script>

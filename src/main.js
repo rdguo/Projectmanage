@@ -10,11 +10,23 @@ import './assets/css/icon.css';
 import './components/common/directives';
 import 'babel-polyfill';
 
+// 引入vuex
+import Vuex from 'vuex'
+import store from './vuex'
+/* 全局fliter */
+import * as commonFliter from './common/filters'
+Object.keys(commonFliter).forEach(key => {
+  Vue.filter(key, commonFliter[key])
+})
+
 Vue.config.productionTip = false;
+
 Vue.use(VueI18n);
 Vue.use(ElementUI, {
     size: 'small'
 });
+Vue.use(Vuex);
+
 const i18n = new VueI18n({
     locale: 'zh',
     messages
@@ -44,5 +56,6 @@ router.beforeEach((to, from, next) => {
 new Vue({
     router,
     i18n,
+    store,
     render: h => h(App)
 }).$mount('#app');
