@@ -30,13 +30,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-
 export default {
     data: function() {
         return {
             param: {
-                username: 'admin',
-                password: 'admin',
+                username: '',
+                password: '',
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -56,7 +55,7 @@ export default {
       ]),
       submitForm() {
         var username = this.param.username
-        var password = this.param.username
+        var password = this.param.password
         var param = {
           username: username,
           password: password
@@ -64,14 +63,18 @@ export default {
         if(username&&password)
         {
           this.login(param).then(res => {
-            if(res.errno === 0){
-              this.$message.success(res.errmsg || '登陆成功')
-              if (res.data.role == '1' || res.data.role == '2' || res.data.role == '3') {
-              this.$router.push({ path: '/' })
-            // } else if (res.data.role == '4') {
-            //   this.$router.push({ path: '/' })
+            const _this = this
+            if(res.data.errno == 0){
+              _this.$message.success(res.data.errmsg || '登陆成功')
+              if (res.data.data.id == '1' || res.data.data.id == '2' || res.data.data.id == '3') {
+              localStorage.setItem('ms_username', this.param.username);
+              _this.$router.push({ path: '/' })
               } else if (res.data.role == '1') {
               }
+            }
+            else if(res.data.errno == 403)
+            {
+              this.$message.error(res.errmsg || '账号密码错误！请重新填写')
             }
             else{
               this.$message.error(res.errmsg || '服务开小差')

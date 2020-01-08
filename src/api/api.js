@@ -15,7 +15,7 @@ import {
 // 继承vue的原型方法
 Vue.prototype.axios = axios
 const service = axios.create({
-  baseURL: 'http://127.0.0.1:8360',
+  baseURL: 'http://192.168.0.109:8360',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Access-Control-Allow-Origin':'*'
@@ -26,13 +26,16 @@ const service = axios.create({
 
 // 开发环境调试用户信息
 //请求拦截器
-service.interceptors.request.use(config => {
+service.interceptors.request.use(
+  config => {
     // if (process.env.NODE_ENV === 'development') {
     //   config.headers['username'] = 'test'
     // }
     config.data = qs.stringify(config.data) // 转为formdata数据格式
     return config
-})
+  },
+  error => Promise.error(error)
+)
 //响应拦截器
 service.interceptors.response.use(
   response => {

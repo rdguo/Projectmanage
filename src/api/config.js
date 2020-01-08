@@ -33,7 +33,7 @@ let postConfig = {
     url: '',
     baseURL: serveUrl,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
       'X-Requested-With': 'XMLHttpRequest'
     },
     transformRequest: [function (data) {
@@ -47,5 +47,3 @@ export {
     getConfig,
     postConfig,
   }
-
-  
