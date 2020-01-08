@@ -50,6 +50,7 @@
 </template>
 <script>
 import bus from '../common/bus';
+import { mapGetters, mapActions } from 'vuex'
 export default {
     data() {
         return {
@@ -66,11 +67,21 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+          'logout'
+        ]),
         // 用户名下拉菜单选择事件
         handleCommand(command) {
             if (command == 'loginout') {
+              try {
+                this.logout().then(res => {
+                this.$message.success(res.errmsg || '退出成功')
                 localStorage.removeItem('ms_username');
                 this.$router.push('/login');
+              })
+              } catch (error) {
+                this.$message.success(res.errmsg || '退出失败')
+              }
             }
         },
         // 侧边栏折叠

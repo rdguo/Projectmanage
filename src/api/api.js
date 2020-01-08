@@ -63,10 +63,13 @@ export default {
     return service.post('/admin/login', params)
   },
   logout: params => {
-    return service.post('/home/user/logout', params)
+    return service.post('/admin/logout', params)
   },
   changePassword: params => {
     return service.post('/home/user/changepass', params)
+  },
+  addProgram: params =>{
+    return service.post('/program/addProgram', params)
   },
   addWeekly: params => {
     return service.post('/home/weekly/addWeekly', params)

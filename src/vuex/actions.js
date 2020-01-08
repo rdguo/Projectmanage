@@ -26,6 +26,12 @@ export const logout = ({ commit }, params) => {
     return response;
   })
 }
+// add 项目
+export const addProgram = ({ commit }, params) => {
+  return Api.addProgram(params).then(response => {
+    return response;
+  })
+}
 // add weekly
 export const addWeekly = ({ commit }, params) => {
   return Api.addWeekly(params).then(response => {
