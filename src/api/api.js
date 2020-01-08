@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 import router from '../router'
+import qs from 'qs'
+//import {getCookie} from '@/utils/cookie'
 
 import {
     serveUrl,
@@ -13,32 +15,39 @@ import {
 // 继承vue的原型方法
 Vue.prototype.axios = axios
 const service = axios.create({
-  baseURL: '/weekly_node',
+  baseURL: 'http://127.0.0.1:8360',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Access-Control-Allow-Origin':'*'
+  },
   // baseURL: '/',
   timeout: 10000
 })
 
 // 开发环境调试用户信息
+//请求拦截器
 service.interceptors.request.use(config => {
-    if (process.env.NODE_ENV === 'development') {
-      config.headers['username'] = 'test'
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   config.headers['username'] = 'test'
+    // }
+    config.data = qs.stringify(config.data) // 转为formdata数据格式
     return config
 })
-
+//响应拦截器
 service.interceptors.response.use(
   response => {
-    let data = response.data
-    if (!data.data) {
-      //   登陆成功的回调地址
-      return data
-    } else {
-      return data
-    }
+    // let data = response.data
+    // if (!data.data) {
+    //   //   登陆成功的回调地址
+    //   return data
+    // } else {
+    //   return data
+    // }
+    return response
   },
   error => ({
     code: -1,
-    msg: '网络异常'
+    msg: error
   })
 )
 
@@ -48,7 +57,7 @@ export default {
     return service.post('/home/user/queryuser', params)
   },
   login: params => {
-    return service.post('/home/user/login', params)
+    return service.post('/admin/login', params)
   },
   logout: params => {
     return service.post('/home/user/logout', params)

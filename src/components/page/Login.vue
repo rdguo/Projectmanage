@@ -35,8 +35,8 @@ export default {
     data: function() {
         return {
             param: {
-                username: '',
-                password: '',
+                username: 'admin',
+                password: 'admin',
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -55,23 +55,40 @@ export default {
         'getUserInfo'
       ]),
       submitForm() {
-        var username = this.username
-        var password = this.username
+        var username = this.param.username
+        var password = this.param.username
         var param = {
           username: username,
           password: password
         }
-          this.$refs.login.validate(valid => {
-              if (valid) {
-                  this.$message.success('登录成功');
-                  localStorage.setItem('ms_username', this.param.username);
-                  this.$router.push('/');
-              } else {
-                  this.$message.error('请输入账号和密码');
-                  console.log('error submit!!');
-                  return false;
+        if(username&&password)
+        {
+          this.login(param).then(res => {
+            if(res.errno === 0){
+              this.$message.success(res.errmsg || '登陆成功')
+              if (res.data.role == '1' || res.data.role == '2' || res.data.role == '3') {
+              this.$router.push({ path: '/' })
+            // } else if (res.data.role == '4') {
+            //   this.$router.push({ path: '/' })
+              } else if (res.data.role == '1') {
               }
-          });
+            }
+            else{
+              this.$message.error(res.errmsg || '服务开小差')
+            }
+          })          
+        }
+          // this.$refs.login.validate(valid => {
+          //     if (valid) {
+          //         this.$message.success('登录成功');
+          //         localStorage.setItem('ms_username', this.param.username);
+          //         this.$router.push('/');
+          //     } else {
+          //         this.$message.error('请输入账号和密码');
+          //         console.log('error submit!!');
+          //         return false;
+          //     }
+          // });
       },
     },
 };
